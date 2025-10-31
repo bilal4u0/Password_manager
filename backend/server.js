@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
 
-let conn = "mongodb://localhost:27017/dataBase"
+let conn = "mongodb+srv://MohammedBilal:<db_password>@cluster0.pikqdkx.mongodb.net/"
 
 const connected = async () => {
   await mongoose.connect(conn)
