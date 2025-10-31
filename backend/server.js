@@ -68,7 +68,7 @@ app.post('/registered', async (req, res,) => {
         message: "User with this email already exist."
       });
     }
- 
+
 
     res.status(500).send({
       success: false,
@@ -90,7 +90,7 @@ app.post('/login', async (req, res) => {
         success: false,
         message: "Invalid email or password."
       });
-    } 
+    }
 
     res.status(200).send({
       success: true,
@@ -104,22 +104,49 @@ app.post('/login', async (req, res) => {
     });
   }
 })
+
 app.get('/users', async (req, res) => {
- try{
-  const users=await MyUser.find()
-  res.status(200).send({
-    success: true,
-    message: "Users fetched successfully ✅",
-    users: users
-  })
- } catch (error) {
-  console.error("Error fetching users:", error);
-  res.status(500).send({
-    success: false,
-    message: "Something went wrong on the server."
-  });
- }
+  try {
+    const users = await MyUser.find()
+    res.status(200).send({
+      success: true,
+      message: "Users fetched successfully ✅",
+      users: users
+    })
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).send({
+      success: false,
+      message: "Something went wrong on the server."
+    });
+  }
 })
+
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const deletedUser = await MyUser.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "User deleted successfully ✅"
+    })
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).send({
+      success: false,
+      message: "Something went wrong on the server."
+    });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
